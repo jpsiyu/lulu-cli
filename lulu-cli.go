@@ -10,10 +10,30 @@ import (
 	"github.com/urfave/cli"
 )
 
+var cowStr = `	
+     /                       \
+    /X/                       \X\
+   |XX\         _____         /XX|
+   |XXX\     _/       \_     /XXX|___________
+   \XXXXXXX             XXXXXXX/            \\\
+      \XXXX    /     \    XXXXX/                \\\
+           |   0     0   |                         \
+            |           |                           \
+             \         /                            |______//
+              \       /                             |
+               | O_O | \                            |
+                \ _ /   \________________           |
+                           | |  | |      \         /
+     No Bullshit,          / |  / |       \______/
+      Please...            \ |  \ |        \ |  \ |
+                         __| |__| |      __| |__| |
+                         |___||___|      |___||___|
+`
+
 func simpleHandler(name string, args ...string) func(c *cli.Context) error {
 	return func(c *cli.Context) error {
 		cmd := exec.Command(name, args...)
-		fmt.Println("cmd:", name, strings.Join(args, " "))
+		//fmt.Println("cmd:", name, strings.Join(args, " "))
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		if err := cmd.Run(); err != nil {
@@ -103,6 +123,11 @@ func main() {
 			Name:   "dockerls",
 			Usage:  "Show name and tag of docker image",
 			Action: shellHandler("docker image ls | awk '{print $1,$2}'"),
+		},
+		{
+			Name:   "space",
+			Usage:  "Give me space",
+			Action: simpleHandler("echo", cowStr),
 		},
 	}
 
